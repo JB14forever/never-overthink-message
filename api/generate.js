@@ -15,6 +15,15 @@ function isRateLimited(ip) {
     return false;
   }
 
+  // Periodic cleanup of map when it gets large (e.g. 1000+ entries)
+  if (rateLimitMap.size > 1000) {
+    for (const [key, val] of rateLimitMap.entries()) {
+      if (now - val.windowStart > RATE_LIMIT_WINDOW_MS) {
+        rateLimitMap.delete(key);
+      }
+    }
+  }
+
   if (now - record.windowStart > RATE_LIMIT_WINDOW_MS) {
     rateLimitMap.set(ip, { count: 1, windowStart: now });
     return false;
@@ -27,16 +36,6 @@ function isRateLimited(ip) {
   record.count += 1;
   return false;
 }
-
-// Clean up old entries every 5 minutes to prevent memory bloat
-setInterval(() => {
-  const now = Date.now();
-  for (const [ip, record] of rateLimitMap.entries()) {
-    if (now - record.windowStart > RATE_LIMIT_WINDOW_MS * 2) {
-      rateLimitMap.delete(ip);
-    }
-  }
-}, 5 * 60 * 1000);
 
 // ─── Prompt Injection Sanitizer ───────────────────────────────────────────────
 const BANNED_PHRASES = [
