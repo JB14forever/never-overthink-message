@@ -75,7 +75,7 @@ function setCorsHeaders(req, res) {
   if (origin && allowedOrigins.includes(origin.toLowerCase())) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   } else {
-    res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN?.split(",")[0] || "*");
+    res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN?.split(",")[0]?.trim() || "*");
   }
   
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -180,8 +180,8 @@ Include explanation: ${cleanExplanation}`;
 
   // ── Call AI API ───────────────────────────────────────────────────────────
   try {
-    const openaiKey   = process.env.OPENAI_API_KEY;
-    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    const openaiKey   = process.env.OPENAI_API_KEY?.trim();
+    const anthropicKey = process.env.ANTHROPIC_API_KEY?.trim();
 
     let result;
 
