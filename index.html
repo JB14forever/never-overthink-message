@@ -9,6 +9,10 @@
     content="Generate the perfect message for any situation instantly. AI-powered, free, and private. From apologies to rescheduling — get 3 ready-to-send message variations." />
   <meta name="keywords"
     content="message generator, AI message, apology message, professional message, text generator" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
+  
   <!-- Open Graph -->
   <meta property="og:title" content="Never Overthink a Message Again" />
   <meta property="og:description" content="Generate the right message instantly with AI." />
@@ -650,7 +654,7 @@
 
       } catch (err) {
         if (err.name === 'TypeError' && err.message.includes('fetch')) {
-          showError('Could not reach the server. Make sure you have configured the API URL in index.html (replace YOUR-VERCEL-URL).');
+          showError('Could not reach the AI server. Please check your internet connection or try again later.');
         } else {
           showError(err.message || 'Something went wrong. Please try again.');
         }

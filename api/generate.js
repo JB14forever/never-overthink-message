@@ -69,18 +69,23 @@ function sanitizeInput(text) {
 }
 
 // ─── CORS Helper ──────────────────────────────────────────────────────────────
-function setCorsHeaders(res) {
-  // Replace with your actual GitHub Pages domain for production
-  // e.g., "https://yourusername.github.io"
-  const allowedOrigins = (process.env.ALLOWED_ORIGIN || "*").split(",").map(s => s.trim());
-  res.setHeader("Access-Control-Allow-Origin", allowedOrigins[0] || "*");
+function setCorsHeaders(req, res) {
+  const origin = req.headers.origin;
+  const allowedOrigins = (process.env.ALLOWED_ORIGIN || "*").toLowerCase().split(",").map(s => s.trim());
+  
+  if (origin && allowedOrigins.includes(origin.toLowerCase())) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN?.split(",")[0] || "*");
+  }
+  
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 }
 
 // ─── Main Handler ─────────────────────────────────────────────────────────────
 export default async function handler(req, res) {
-  setCorsHeaders(res);
+  setCorsHeaders(req, res);
 
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
