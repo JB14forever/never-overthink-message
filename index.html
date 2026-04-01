@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Never Overthink a Message Again | AI Message Generator</title>
+  <meta name="description"
+    content="Generate the perfect message for any situation instantly. AI-powered, free, and private. From apologies to rescheduling — get 3 ready-to-send message variations." />
+  <meta name="keywords"
+    content="message generator, AI message, apology message, professional message, text generator" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Never Overthink a Message Again" />
+  <meta property="og:description" content="Generate the right message instantly with AI." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0D0D0D',
+            card: '#1A1A1A',
+            cardHover: '#222222',
+            primary: '#FF6A00',
+            primaryHover: '#FF8533',
+            text: '#FFFFFF',
+            secondary: '#B3B3B3',
+            border: '#2A2A2A',
+            success: '#22C55E',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          boxShadow: {
+            glow: '0 0 30px rgba(255,106,0,0.25)',
+            card: '0 4px 24px rgba(0,0,0,0.5)',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.4s ease-out',
+            'slide-up': 'slideUp 0.4s ease-out',
+            'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            fadeIn: { from: { opacity: '0' }, to: { opacity: '1' } },
+            slideUp: { from: { opacity: '0', transform: 'translateY(16px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0D0D0D;
+      background-image:
+        radial-gradient(ellipse at 10% 0%, rgba(255, 106, 0, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 100%, rgba(255, 106, 0, 0.08) 0%, transparent 50%);
+      min-height: 100vh;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1A1A1A;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #FF6A00;
+      border-radius: 3px;
+    }
+
+    /* Custom select & textarea styles */
+    select,
+    textarea,
+    input {
+      background-color: #111111 !important;
+      color: #FFFFFF !important;
+      border: 1px solid #2A2A2A !important;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: 'Inter', sans-serif !important;
+    }
+
+    select:focus,
+    textarea:focus,
+    input:focus {
+      outline: none !important;
+      border-color: #FF6A00 !important;
+      box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15) !important;
+    }
+
+    select option {
+      background-color: #1A1A1A;
+      color: #FFFFFF;
+    }
+
+    /* Toggle switch */
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #FF6A00;
+    }
+
+    .toggle-checkbox:checked+.toggle-label {
+      background-color: #FF6A00;
+    }
+
+    .toggle-checkbox {
+      right: 20px;
+      transition: right 0.2s;
+    }
+
+    /* Output card message text */
+    .message-text {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #E5E5E5;
+      white-space: pre-wrap;
+    }
+
+    /* Shimmer loading animation */
+    @keyframes shimmer {
+      0% {
+        background-position: -400px 0;
+      }
+
+      100% {
+        background-position: 400px 0;
+      }
+    }
+
+    .shimmer {
+      background: linear-gradient(90deg, #1A1A1A 25%, #222 50%, #1A1A1A 75%);
+      background-size: 400px 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+
+    /* Copy button flash */
+    @keyframes copiedFlash {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    .copied-flash {
+      animation: copiedFlash 0.3s ease;
+    }
+
+    /* Gradient border on card hover */
+    .output-card {
+      border: 1px solid #2A2A2A;
+      transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+      position: relative;
+    }
+
+    .output-card:hover {
+      border-color: rgba(255, 106, 0, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 106, 0, 0.1);
+    }
+
+    /* Badge tags */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: 99px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Floating label animation */
+    .form-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #B3B3B3;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #FF6A00, #FF9A50);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Subtle grid background */
+    .grid-bg {
+      background-image: linear-gradient(#1a1a1a 1px, transparent 1px),
+        linear-gradient(to right, #1a1a1a 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+  </style>
+</head>
+
+<body class="font-sans text-white min-h-screen">
+
+  <!-- ── HEADER ──────────────────────────────────────────────────────────── -->
+  <header class="pt-12 pb-6 px-4 text-center">
+    <div
+      class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-card border border-border text-sm text-secondary">
+      <span class="w-2 h-2 rounded-full bg-primary animate-pulse-slow inline-block"></span>
+      AI-Powered · Free · Instant
+    </div>
+
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4 leading-tight">
+      Never
+      <span class="gradient-text"> Overthink</span>
+      <br class="hidden sm:block" />
+      a Message Again
+    </h1>
+    <p class="text-secondary text-lg sm:text-xl max-w-xl mx-auto font-light">
+      Generate the right message for any situation — instantly.
+    </p>
+  </header>
+
+  <!-- ── MAIN ───────────────────────────────────────────────────────────── -->
+  <main class="max-w-2xl mx-auto px-4 pb-20 space-y-6">
+
+    <!-- Input Card -->
+    <section id="input-card" class="rounded-2xl bg-card border border-border shadow-card p-6 sm:p-8 animate-fade-in">
+      <h2 class="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 rounded-full bg-primary inline-block"></span>
+        Describe Your Situation
+      </h2>
+
+      <form id="message-form" class="space-y-5" novalidate>
+
+        <!-- Row: Recipient + Relationship -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Recipient Type -->
+          <div>
+            <label class="form-label" for="recipient">Recipient</label>
+            <select id="recipient" name="recipient"
+              class="w-full rounded-xl px-4 py-3 text-sm appearance-none cursor-pointer"
+              aria-label="Select recipient type">
+              <option value="Boss">👔 Boss</option>
+              <option value="Teacher">📚 Teacher</option>
+              <option value="Friend" selected>👋 Friend</option>
+              <option value="Family">🏠 Family</option>
+              <option value="Client">💼 Client</option>
+              <option value="Other">🙂 Other</option>
+            </select>
+          </div>
+
+          <!-- Relationship Level -->
+          <div>
+            <label class="form-label" for="relationship">Relationship Level</label>
+            <select id="relationship" name="relationship"
+              class="w-full rounded-xl px-4 py-3 text-sm appearance-none cursor-pointer"
+              aria-label="Select relationship level">
+              <option value="Formal">🏛️ Formal</option>
+              <option value="Semi-formal" selected>🤝 Semi-formal</option>
+              <option value="Close">❤️ Close</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Situation -->
+        <div>
+          <label class="form-label" for="situation">
+            Situation
+            <span class="text-primary ml-1">*</span>
+          </label>
+          <textarea id="situation" name="situation" rows="3" maxlength="500"
+            placeholder="What happened? e.g., I missed a meeting this morning..."
+            class="w-full rounded-xl px-4 py-3 text-sm resize-none" aria-label="Describe your situation"
+            aria-required="true"></textarea>
+          <div class="flex justify-between mt-1">
+            <span id="situation-error" class="text-red-400 text-xs hidden" role="alert">
+              Please describe your situation (at least 3 characters).
+            </span>
+            <span id="char-count" class="text-xs text-secondary ml-auto">0 / 500</span>
+          </div>
+        </div>
+
+        <!-- Row: Tone + Context -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Tone -->
+          <div>
+            <label class="form-label" for="tone">Tone</label>
+            <select id="tone" name="tone" class="w-full rounded-xl px-4 py-3 text-sm appearance-none cursor-pointer"
+              aria-label="Select tone">
+              <option value="Professional">🎯 Professional</option>
+              <option value="Casual" selected>😊 Casual</option>
+              <option value="Apologetic">🙏 Apologetic</option>
+              <option value="Urgent">⚡ Urgent</option>
+              <option value="Neutral">😐 Neutral</option>
+            </select>
+          </div>
+
+          <!-- Context -->
+          <div>
+            <label class="form-label" for="context">Context <span
+                class="text-secondary font-normal">(optional)</span></label>
+            <input type="text" id="context" name="context" maxlength="200"
+              placeholder="Late by 2 hours, missed meeting..." class="w-full rounded-xl px-4 py-3 text-sm"
+              aria-label="Additional context" />
+          </div>
+        </div>
+
+        <!-- Include Explanation Toggle -->
+        <div class="flex items-center justify-between py-3 px-4 rounded-xl bg-black/20 border border-border">
+          <div>
+            <p class="text-sm font-medium text-white">Include Explanation</p>
+            <p class="text-xs text-secondary mt-0.5">Add a brief reason to your message</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer" aria-label="Toggle include explanation">
+            <input type="checkbox" id="includeExplanation" name="includeExplanation" class="sr-only peer" checked
+              aria-checked="true" />
+            <div class="w-11 h-6 bg-border peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/40 rounded-full peer
+                        peer-checked:after:translate-x-full peer-checked:after:border-white after:content-['']
+                        after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300
+                        after:border after:rounded-full after:h-5 after:w-5 after:transition-all
+                        peer-checked:bg-primary transition-colors duration-200"></div>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="generate-btn" class="w-full py-4 rounded-xl font-semibold text-base tracking-wide transition-all duration-200
+                 bg-primary hover:bg-primaryHover active:scale-[0.98]
+                 text-white shadow-glow hover:shadow-glow
+                 flex items-center justify-center gap-2 group" aria-label="Generate messages">
+          <svg id="btn-icon" class="w-5 h-5 transition-transform group-hover:rotate-12" fill="none"
+            stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span id="btn-text">Generate Messages</span>
+        </button>
+
+      </form>
+    </section>
+
+    <!-- ── OUTPUT SECTION ────────────────────────────────────────────────── -->
+    <section id="output-section" class="space-y-4 hidden" aria-live="polite" aria-label="Generated messages">
+
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+          <span class="w-1 h-5 rounded-full bg-primary inline-block"></span>
+          Your Messages
+        </h2>
+        <button id="regenerate-btn"
+          class="text-xs text-secondary hover:text-primary transition-colors flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border hover:border-primary/40"
+          aria-label="Regenerate messages">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Regenerate
+        </button>
+      </div>
+
+      <!-- Card: Professional -->
+      <article id="card-professional" class="output-card rounded-2xl bg-card p-6 animate-slide-up">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center" aria-hidden="true">
+              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-white text-sm">Professional</h3>
+              <p class="text-xs text-secondary">Formal &amp; polished</p>
+            </div>
+          </div>
+          <button
+            class="copy-btn text-xs px-3 py-1.5 rounded-lg bg-border hover:bg-primary/20 hover:text-primary border border-transparent hover:border-primary/30 text-secondary transition-all duration-200 flex items-center gap-1.5"
+            data-target="professional" aria-label="Copy professional message">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copy
+          </button>
+        </div>
+        <div id="msg-professional" class="message-text"></div>
+      </article>
+
+      <!-- Card: Casual -->
+      <article id="card-casual" class="output-card rounded-2xl bg-card p-6 animate-slide-up"
+        style="animation-delay:0.08s">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-green-500/10 flex items-center justify-center" aria-hidden="true">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-white text-sm">Casual</h3>
+              <p class="text-xs text-secondary">Relaxed &amp; friendly</p>
+            </div>
+          </div>
+          <button
+            class="copy-btn text-xs px-3 py-1.5 rounded-lg bg-border hover:bg-primary/20 hover:text-primary border border-transparent hover:border-primary/30 text-secondary transition-all duration-200 flex items-center gap-1.5"
+            data-target="casual" aria-label="Copy casual message">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copy
+          </button>
+        </div>
+        <div id="msg-casual" class="message-text"></div>
+      </article>
+
+      <!-- Card: Smart / Creative -->
+      <article id="card-smart" class="output-card rounded-2xl bg-card p-6 animate-slide-up"
+        style="animation-delay:0.16s">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center" aria-hidden="true">
+              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-white text-sm">Smart / Creative</h3>
+              <p class="text-xs text-secondary">Clever &amp; memorable</p>
+            </div>
+          </div>
+          <button
+            class="copy-btn text-xs px-3 py-1.5 rounded-lg bg-border hover:bg-primary/20 hover:text-primary border border-transparent hover:border-primary/30 text-secondary transition-all duration-200 flex items-center gap-1.5"
+            data-target="smart" aria-label="Copy smart message">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copy
+          </button>
+        </div>
+        <div id="msg-smart" class="message-text"></div>
+      </article>
+
+    </section>
+
+    <!-- ── ERROR STATE ────────────────────────────────────────────────────── -->
+    <div id="error-banner"
+      class="hidden rounded-xl bg-red-500/10 border border-red-500/30 p-4 text-red-400 text-sm flex items-start gap-3"
+      role="alert" aria-live="assertive">
+      <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span id="error-message"></span>
+    </div>
+
+  </main>
+
+  <!-- ── FOOTER ──────────────────────────────────────────────────────────── -->
+  <footer class="text-center py-8 text-xs text-secondary border-t border-border mt-4">
+    <p>Built with ❤️ · AI-powered message generator · No data stored</p>
+  </footer>
+
+  <!-- ─────────────────────────────────────────────────────────────────────── -->
+  <!-- SCRIPT -->
+  <!-- ─────────────────────────────────────────────────────────────────────── -->
+  <script>
+    // ─── CONFIG ─────────────────────────────────────────────────────────────
+    // 🔴 IMPORTANT: Replace this with your actual Vercel deployment URL
+    // Example: https://never-overthink.vercel.app/api/generate
+    const API_URL = 'https://YOUR-VERCEL-URL.vercel.app/api/generate';
+
+    // ─── DOM REFS ────────────────────────────────────────────────────────────
+    const form = document.getElementById('message-form');
+    const generateBtn = document.getElementById('generate-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnIcon = document.getElementById('btn-icon');
+    const outputSection = document.getElementById('output-section');
+    const errorBanner = document.getElementById('error-banner');
+    const errorMessage = document.getElementById('error-message');
+    const situationEl = document.getElementById('situation');
+    const situationError = document.getElementById('situation-error');
+    const charCount = document.getElementById('char-count');
+    const regenerateBtn = document.getElementById('regenerate-btn');
+
+    // ─── CHAR COUNTER ────────────────────────────────────────────────────────
+    situationEl.addEventListener('input', () => {
+      const len = situationEl.value.length;
+      charCount.textContent = `${len} / 500`;
+      charCount.classList.toggle('text-primary', len > 450);
+      if (len >= 3) hideFieldError();
+    });
+
+    // ─── VALIDATION ──────────────────────────────────────────────────────────
+    function showFieldError() {
+      situationError.classList.remove('hidden');
+      situationEl.style.borderColor = '#EF4444 !important';
+    }
+    function hideFieldError() {
+      situationError.classList.add('hidden');
+      situationEl.style.borderColor = '';
+    }
+
+    // ─── ERROR BANNER ────────────────────────────────────────────────────────
+    function showError(msg) {
+      errorMessage.textContent = msg;
+      errorBanner.classList.remove('hidden');
+      // Auto-hide after 6s
+      setTimeout(() => errorBanner.classList.add('hidden'), 6000);
+    }
+    function hideError() {
+      errorBanner.classList.add('hidden');
+    }
+
+    // ─── LOADING STATE ───────────────────────────────────────────────────────
+    function setLoading(loading) {
+      generateBtn.disabled = loading;
+      generateBtn.style.opacity = loading ? '0.7' : '1';
+      generateBtn.style.cursor = loading ? 'not-allowed' : 'pointer';
+
+      if (loading) {
+        btnText.textContent = 'Generating…';
+        btnIcon.innerHTML = `
+          <svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>`;
+        showSkeletons();
+      } else {
+        btnText.textContent = 'Generate Messages';
+        btnIcon.innerHTML = `
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>`;
+      }
+    }
+
+    // ─── SKELETON LOADER ─────────────────────────────────────────────────────
+    function showSkeletons() {
+      outputSection.classList.remove('hidden');
+      ['professional', 'casual', 'smart'].forEach(type => {
+        const el = document.getElementById(`msg-${type}`);
+        el.innerHTML = `
+          <div class="shimmer h-4 mb-2 w-full"></div>
+          <div class="shimmer h-4 mb-2 w-5/6"></div>
+          <div class="shimmer h-4 w-4/6"></div>`;
+      });
+      // Scroll to output
+      outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ─── RENDER RESULTS ──────────────────────────────────────────────────────
+    function renderResults(data) {
+      ['professional', 'casual', 'smart'].forEach(type => {
+        const el = document.getElementById(`msg-${type}`);
+        const text = data[type] || 'No message generated.';
+        el.textContent = text;
+        el.classList.add('animate-fade-in');
+      });
+    }
+
+    // ─── COPY TO CLIPBOARD ───────────────────────────────────────────────────
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const type = btn.dataset.target;
+        const text = document.getElementById(`msg-${type}`)?.textContent?.trim();
+        if (!text || text.includes('shimmer')) return;
+
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = btn.innerHTML;
+          btn.innerHTML = `
+            <svg class="w-3.5 h-3.5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            Copied!`;
+          btn.classList.add('text-green-400', 'border-green-400/30');
+          btn.classList.remove('text-secondary');
+          setTimeout(() => {
+            btn.innerHTML = original;
+            btn.classList.remove('text-green-400', 'border-green-400/30');
+            btn.classList.add('text-secondary');
+          }, 2000);
+        } catch {
+          showError('Unable to copy. Please select the text manually.');
+        }
+      });
+    });
+
+    // ─── MAIN SUBMIT ─────────────────────────────────────────────────────────
+    async function handleGenerate() {
+      hideError();
+
+      const situation = situationEl.value.trim();
+      if (!situation || situation.length < 3) {
+        showFieldError();
+        situationEl.focus();
+        return;
+      }
+      hideFieldError();
+
+      const payload = {
+        recipient: document.getElementById('recipient').value,
+        situation: situation,
+        tone: document.getElementById('tone').value,
+        context: document.getElementById('context').value.trim(),
+        relationship: document.getElementById('relationship').value,
+        includeExplanation: document.getElementById('includeExplanation').checked,
+      };
+
+      setLoading(true);
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || `Server error (${response.status})`);
+        }
+
+        renderResults(data);
+
+      } catch (err) {
+        if (err.name === 'TypeError' && err.message.includes('fetch')) {
+          showError('Could not reach the server. Make sure you have configured the API URL in index.html (replace YOUR-VERCEL-URL).');
+        } else {
+          showError(err.message || 'Something went wrong. Please try again.');
+        }
+        // Don't hide the output section if we already have results
+        const hasResults = document.getElementById('msg-professional')?.textContent?.trim();
+        if (!hasResults) outputSection.classList.add('hidden');
+
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      handleGenerate();
+    });
+
+    regenerateBtn.addEventListener('click', () => handleGenerate());
+  </script>
+</body>
+
+</html>
