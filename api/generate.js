@@ -180,15 +180,18 @@ Include explanation: ${cleanExplanation}`;
 
   // ── Call AI API ───────────────────────────────────────────────────────────
   try {
-    const openaiKey   = process.env.OPENAI_API_KEY?.trim();
+    const openaiKey    = process.env.OPENAI_API_KEY?.trim();
     const anthropicKey = process.env.ANTHROPIC_API_KEY?.trim();
+    const hfKey        = process.env.HUGGINGFACE_API_KEY?.trim();
 
     let result;
 
     if (openaiKey) {
-      result = await callOpenAI(systemPrompt, userPrompt, openaiKey);
+      result = await callOpenAI("https://api.openai.com/v1/chat/completions", "gpt-4o-mini", systemPrompt, userPrompt, openaiKey);
     } else if (anthropicKey) {
       result = await callAnthropic(systemPrompt, userPrompt, anthropicKey);
+    } else if (hfKey) {
+      result = await callOpenAI("https://router.huggingface.co/hf-inference/v1/chat/completions", "meta-llama/Llama-3.2-3B-Instruct", systemPrompt, userPrompt, hfKey);
     } else {
       return res.status(500).json({
         error: "No AI API key configured.",
@@ -203,16 +206,16 @@ Include explanation: ${cleanExplanation}`;
   }
 }
 
-// ─── OpenAI Caller ────────────────────────────────────────────────────────────
-async function callOpenAI(systemPrompt, userPrompt, apiKey) {
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+// ─── OpenAI Compatible Caller ──────────────────────────────────────────────────
+async function callOpenAI(apiUrl, modelName, systemPrompt, userPrompt, apiKey) {
+  const response = await fetch(apiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: "gpt-4o-mini",
+      model: modelName,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
